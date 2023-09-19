@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+#include <stdlib.h>
 int chartoint(int num){
     return num - '0';
 }
@@ -49,31 +49,37 @@ void soma(char a[501], char b[501]){
         soma[0] = intochar(carry);
     }
     else {
-        strcpy(temp, a);
 
         int carry = 0;
-        for (int i = strlen(temp) - 1; i >= 0; i--){
-            int sum = chartoint(temp[i]) + chartoint(b[i]) + carry;
+        for (int i = strlen(a) - 1; i >= 0; i--){
+            int sum = chartoint(a[i]) + chartoint(b[i]) + carry;
             carry = sum / 10;
             soma[i+1] = intochar(sum % 10);
         }
         soma[0] = intochar(carry);
     }
-
+    if (atoi(soma) == 0){
+        printf("0");
+    }else{
     int start = 0;
     while (soma[start] == '0' && start < strlen(soma)) {
         start++;
     }
 
     for (int i = start; i < strlen(soma); i++){
+        if (chartoint(soma[i])>= 0 && chartoint(soma[i])<= 9){
         printf("%c", soma[i]);
+        }
     }
+}
 }
 
 int main(){
-    char a[501] = "55";
-    char b[501] = "55";
+    char a[501] = "000000";
+    char b[501] = "0";
 
-    soma(a, b);
+    soma(a, b);   for (int i = start; i < strlen(soma); i++){
+        printf("%c", soma[i]);
+    }
     return 0;
 }
