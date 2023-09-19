@@ -10,15 +10,16 @@ char intochar(int num){
 }
 void soma(char a[501], char b[501]){
     char temp[502], soma[1002];
-    if (strlen(a) > strlen(b)){
-        int diff = strlen(a) - strlen(b);
+    int lena = strlen(a), lenb = strlen(b);
+    if (lena > lenb){
+        int diff = lena - lenb;
         for (int i = 0; i < diff; i++){
             temp[i] = '0';
         }
-        for(int i = diff; i < strlen(a); i++){
+        for(int i = diff; i < lena; i++){
             temp[i] = b[i - diff];
         }
-        temp[strlen(a)] = '\0';
+        temp[lena] = '\0';
 
         int carry = 0;
         for (int i = strlen(temp) - 1; i >= 0; i--){
@@ -28,15 +29,15 @@ void soma(char a[501], char b[501]){
         }
         soma[0] = intochar(carry);
     }
-    else if(strlen(b) > strlen(a)){
-        int diff = strlen(b) - strlen(a);
+    else if(lenb > lena){
+        int diff = lenb - lena;
         for (int i = 0; i < diff; i++){
             temp[i] = '0';
         }
-        for(int i = diff; i < strlen(b); i++){
+        for(int i = diff; i < lenb; i++){
             temp[i] = a[i - diff];
         }
-        temp[strlen(b)] = '\0';
+        temp[lenb] = '\0';
 
         int carry = 0;
         for (int i = strlen(temp) - 1; i >= 0; i--){
@@ -49,7 +50,7 @@ void soma(char a[501], char b[501]){
     else {
 
         int carry = 0;
-        for (int i = strlen(a) - 1; i >= 0; i--){
+        for (int i = lena - 1; i >= 0; i--){
             int sum = chartoint(a[i]) + chartoint(b[i]) + carry;
             carry = sum / 10;
             soma[i+1] = intochar(sum % 10);
@@ -71,7 +72,7 @@ void soma(char a[501], char b[501]){
         }
     }
 }
-void sub(char a[501], char b[501]){
+void subr(char a[501], char b[501]){
     int lena = strlen(a), lenb = strlen(b);
     char temp[1002], sub[1002];
     int resulnegativo = 0;
@@ -100,12 +101,33 @@ void sub(char a[501], char b[501]){
     else if(maior == 1){
         resulnegativo = 0;
     }
+    if (lena > lenb){
+        int diff = lena - lenb;
+        for (int i = 0; i < diff; i++){
+            temp[i] = '0';
+        }
+        for(int i = diff; i < lena; i++){
+            temp[i] = b[i - diff];
+        }
+        temp[lena] = '\0';
+
+    }
+    else if(lenb > lena){
+        int diff = lenb - lena;
+        for (int i = 0; i < diff; i++){
+            temp[i] = '0';
+        }
+        for(int i = diff; i < lenb; i++){
+            temp[i] = a[i - diff];
+        }
+        temp[lenb] = '\0';
+    }
 
 }
 
 int main(){
-    char a[501] = "127349847218943757471829";
-    char b[501] = "9942174127482147421798427421";
+    char a[501] = "255";
+    char b[501] = "45";
 
     soma(a, b);
     return 0;
