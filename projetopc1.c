@@ -78,8 +78,6 @@ int main(){
     char a[501] = "000000";
     char b[501] = "0";
 
-    soma(a, b);   for (int i = start; i < strlen(soma); i++){
-        printf("%c", soma[i]);
-    }
+    soma(a, b);
     return 0;
 }
