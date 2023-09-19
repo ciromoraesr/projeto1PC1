@@ -8,70 +8,6 @@ int chartoint(int num){
 char intochar(int num){
     return num + '0';
 }
-void soma(char a[501], char b[501]){
-    char temp[502], soma[1002];
-    int lena = strlen(a), lenb = strlen(b);
-    if (lena > lenb){
-        int diff = lena - lenb;
-        for (int i = 0; i < diff; i++){
-            temp[i] = '0';
-        }
-        for(int i = diff; i < lena; i++){
-            temp[i] = b[i - diff];
-        }
-        temp[lena] = '\0';
-
-        int carry = 0;
-        for (int i = strlen(temp) - 1; i >= 0; i--){
-            int sum = chartoint(temp[i]) + chartoint(a[i]) + carry;
-            carry = sum / 10;
-            soma[i+1] = intochar(sum % 10);
-        }
-        soma[0] = intochar(carry);
-    }
-    else if(lenb > lena){
-        int diff = lenb - lena;
-        for (int i = 0; i < diff; i++){
-            temp[i] = '0';
-        }
-        for(int i = diff; i < lenb; i++){
-            temp[i] = a[i - diff];
-        }
-        temp[lenb] = '\0';
-
-        int carry = 0;
-        for (int i = strlen(temp) - 1; i >= 0; i--){
-            int sum = chartoint(temp[i]) + chartoint(b[i]) + carry;
-            carry = sum / 10;
-            soma[i+1] = intochar(sum % 10);
-        }
-        soma[0] = intochar(carry);
-    }
-    else {
-
-        int carry = 0;
-        for (int i = lena - 1; i >= 0; i--){
-            int sum = chartoint(a[i]) + chartoint(b[i]) + carry;
-            carry = sum / 10;
-            soma[i+1] = intochar(sum % 10);
-        }
-        soma[0] = intochar(carry);
-    }
-    if (atoi(soma) == 0){
-        printf("0");
-    }else{
-    int start = 0;
-    while (soma[start] == '0' && start < strlen(soma)) {
-        start++;
-    }
-
-    for (int i = start; i < strlen(soma); i++){
-        if (chartoint(soma[i])>= 0 && chartoint(soma[i])<= 9){
-        printf("%c", soma[i]);
-            }
-        }
-    }
-}
 void subr(char a[501], char b[501]){
     int lena = strlen(a), lenb = strlen(b);
     char temp[1002], sub[1002];
@@ -111,7 +47,35 @@ void subr(char a[501], char b[501]){
             temp[i] = b[i - diff];
         }
         temp[lena] = '\0';
+    if (resulnegativo == 1){
+        for(int i = lena -1; i>= 0; i -- ){
+                int x = chartoint(temp[i]);
+                int y = chartoint(a[i]);
+                int diff = x - y - carry;
+            
+            if (diff < 0){
+                diff = diff + 10;
+                carry = 1;
+            }else{
+                carry = 0;
+            }
+            sub[i] = intochar(diff);
 
+       }}else{
+        for(int i = lena -1; i>= 0; i -- ){
+                int x = chartoint(a[i]);
+                int y = chartoint(temp[i]);
+                int diff = x - y - carry;
+            
+            if (diff < 0){
+                diff = diff + 10;
+                carry = 1;
+            }else{
+                carry = 0;
+            }
+            sub[i] = intochar(diff);
+       } 
+    }
     }
     else if(lenb > lena){
         int diff = lenb - lena;
@@ -122,7 +86,36 @@ void subr(char a[501], char b[501]){
             temp[i] = a[i - diff];
         }
         temp[lenb] = '\0';
-    
+     
+    //if (resulnegativo == 1){
+        for(int i = lenb  + 1 ; i>= 0; i -- ){
+                int x = chartoint(b[i]);
+                int y = chartoint(temp[i]);
+                int diff = x - y - carry;
+            
+            if (diff < 0){
+                diff = diff + 10;
+                carry = 1;
+            }else{
+                carry = 0;
+            }
+            sub[i] = intochar(diff);
+
+    //    }}else{
+    //     for(int i = lena -1; i>= 0; i -- ){
+    //             int x = chartoint(b[i]);
+    //             int y = chartoint(temp[i]);
+    //             int diff = x - y - carry;
+            
+    //         if (diff < 0){
+    //             diff = diff + 10;
+    //             carry = 1;
+    //         }else{
+    //             carry = 0;
+    //         }
+    //         sub[i] = intochar(diff);
+    //    } 
+    }
 
     }else{
        if (resulnegativo == 1){
@@ -163,7 +156,7 @@ for(int i = 0; i < lena; i++){
 }
 }
 int main(){
-    char a[501] = "05";
+    char a[501] = "500";
     char b[501] = "10";
 
     subr(a, b);
