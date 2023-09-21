@@ -7,8 +7,8 @@ int chartoint(char num) {
 //função pra checar se os valor da string são todos zeros ou não
 int checkzer(char s[501]){
     int zero = 0;
-    for(int i  = 0; i < strlen(s)-1; i++){
-        if(s[i] != '0'){
+    for(int i  = 0; i < strlen(s); i++){
+        if(s[i] != '0' && s[i] != '\0'){
             zero = 1;
             break;
         }
@@ -97,6 +97,7 @@ void subr(char a[501], char b[501]) {
     int carry = 0;
     int um = checkzer(a);
     int dois = checkzer(b); 
+
     //definindo um número para caso uma string seja maior q a outra: 1-string A ; 2- string B
         if (lena > lenb) {
             resulnegativo = 0;
@@ -111,6 +112,7 @@ void subr(char a[501], char b[501]) {
                     resulnegativo = 1;
                     break;
                 }
+                
             }
         }
     if (lena > lenb){
@@ -177,7 +179,16 @@ void subr(char a[501], char b[501]) {
 }
 if (atoi(sub) == 0) {
         printf("0");
-} else {
+}else if(um == 0 && dois != 0){
+    printf("-");
+    for(int i =0; i < lenb ; i++){
+        printf("%c", b[i]);
+    }
+}else if(atoi(b) == 0){
+    for(int i = 0; i < lena; i++){
+        printf("%c", a[i]);
+    } 
+}else {
     if (resulnegativo == 1) {
             printf("-");
         }
@@ -208,7 +219,7 @@ void mult(char a[501], char b[501]){
         for(int i = lenb-1; i >= 0; i--){
         int carry = 0;
             for(int j = lena -1; j >= 0; j--){
-                int multi = (chartoint(b[i]) * chartoint(a[j]) + chartoint(resultado[i+j])+ carry);
+                int multi = (chartoint(b[i]) * chartoint(a[j]) + chartoint(resultado[i+j+1])+ carry);
                 resultado[j+ i +1] = intochar(multi%10);
                 carry = multi/ 10;   
             }
