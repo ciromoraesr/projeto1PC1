@@ -46,12 +46,15 @@ void soma(char a[501], char b[501]) {
         }
         temp[lena] = '\0';
         int carry = 0;
-        for (int i = strlen(temp) - 1; i >= 0; i--) {
+        soma[lena] = '\0';
+        for (int i = lena - 1; i >= 0; i--) {
             int sum = chartoint(temp[i]) + chartoint(a[i]) + carry;
             carry = sum / 10;
+            soma[i+2] = soma[i + 1];
             soma[i + 1] = intochar(sum % 10);
         }
         soma[0] = intochar(carry);
+        
     } else if (lenb > lena) {
         int diff = lenb - lena;
         for (int i = 0; i < diff; i++) {
@@ -62,22 +65,26 @@ void soma(char a[501], char b[501]) {
         }
         temp[lenb] = '\0';
         int carry = 0;
-        for (int i = strlen(temp) - 1; i >= 0; i--) {
+        soma[lenb] = '0';
+        for (int i = lenb - 1; i >= 0; i--) {
             int sum = chartoint(temp[i]) + chartoint(b[i]) + carry;
             carry = sum / 10;
+            soma[i+2] = soma[i + 1];
             soma[i + 1] = intochar(sum % 10);
         }
         soma[0] = intochar(carry);
     } else {
         int carry = 0;
+        soma[lenb] = '\0';
         for (int i = lena - 1; i >= 0; i--) {
             int sum = chartoint(a[i]) + chartoint(b[i]) + carry;
             carry = sum / 10;
+            soma[i+2] = soma[i + 1];
             soma[i + 1] = intochar(sum % 10);
         }
         soma[0] = intochar(carry);
     }
-    if (atoi(soma) == 0) {
+    if (checkzer(soma) == 0) {
         printf("0");
     } else {
         int start = 0;
@@ -94,15 +101,13 @@ void soma(char a[501], char b[501]) {
 }
 
 void subr(char a[501], char b[501]) {
-    // Declaring the variables used
     int lena = strlen(a), lenb = strlen(b);
     char temp[1002], sub[1002];
+    sub[1002] = '\0';
     int resulnegativo = 0;
     int carry = 0;
-    int um = checkzer(a);
-    int dois = checkzer(b);
+    
 
-    // Defining a number in case one string is longer than the other: 1-string A ; 2- string B
     if (lena > lenb) {
         resulnegativo = 0;
     } else if (lenb > lena) {
@@ -120,11 +125,12 @@ void subr(char a[501], char b[501]) {
     }
     if (lena > lenb) {
         post(a, b, temp);
+        sub[lena] = '\0';
         for (int i = lena - 1; i >= 0; i--) {
             int x = chartoint(a[i]);
             int y = chartoint(temp[i]);
             int diff = x - y - carry;
-
+            
             if (diff < 0) {
                 diff = diff + 10;
                 carry = 1;
@@ -135,6 +141,7 @@ void subr(char a[501], char b[501]) {
         }
     } else if (lenb > lena) {
         post(b, a, temp);
+        sub[lenb] = '\0';
         for (int i = lenb - 1; i >= 0; i--) {
             int x = chartoint(b[i]);
             int y = chartoint(temp[i]);
@@ -149,6 +156,7 @@ void subr(char a[501], char b[501]) {
             sub[i] = intochar(diff);
         }
     } else {
+        sub[lena] = '\0';
         if (resulnegativo == 1) {
             for (int i = lena - 1; i >= 0; i--) {
                 int x = chartoint(b[i]);
@@ -179,9 +187,10 @@ void subr(char a[501], char b[501]) {
             }
         }
     }
-    if (atoi(sub) == 0) {
+    if (checkzer(sub) == 0) {
         printf("0");
-    } else if (um == 0 && dois != 0) {
+    } else{
+    /*else if (um == 0 && dois != 0) {
         printf("-");
         for (int i = 0; i < lenb; i++) {
             printf("%c", b[i]);
@@ -190,7 +199,7 @@ void subr(char a[501], char b[501]) {
         for (int i = 0; i < lena; i++) {
             printf("%c", a[i]);
         }
-    } else {
+    } else { */ 
         if (resulnegativo == 1) {
             printf("-");
         }
@@ -208,18 +217,21 @@ void subr(char a[501], char b[501]) {
             }
         }
     }
+    
     printf("\n");
 }
 
 void mult(char a[501], char b[501]) {
     int lena = strlen(a), lenb = strlen(b);
-    char temp[501], resultado[1002];
+    char resultado[1002];
+    resultado[lena + lenb] = '\0';
     for (int i = 0; i < lena + lenb; i++) {
         resultado[i] = '0';
     }
     resultado[lena + lenb] = '\0';
+    //Começando a multiplicação
     for (int i = lenb - 1; i >= 0; i--) {
-        int carry = 0;
+        int carry = 0;  
         for (int j = lena - 1; j >= 0; j--) {
             int multi = (chartoint(b[i]) * chartoint(a[j]) + chartoint(resultado[i + j + 1]) + carry);
             resultado[j + i + 1] = intochar(multi % 10);
