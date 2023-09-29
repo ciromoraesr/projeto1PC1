@@ -2,10 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+//função que transforma um char em um inteiro
 int chartoint(char num) {
     return num - '0';
 }
-
+//função que transforma um inteiro em um char
+char intochar(int num) {
+    return num + '0';
+}
+/*função que checa se a função é composta somente de zeros, ou não.
+caso seja só 0 ela retorna 0, e caso tenha algum número diferente de zero ela retorna 1.*/
 int checkzer(char s[501]) {
     int zero = 0;
     for (int i = 0; i < strlen(s); i++) {
@@ -16,11 +22,7 @@ int checkzer(char s[501]) {
     }
     return zero;
 }
-
-char intochar(int num) {
-    return num + '0';
-}
-
+//função que deixa as strings a e b com o mesmo tamanho, colocando zeros a esquerda na menor string
 void post(char x[501], char y[501], char tempo[501]) {
     int lena = strlen(x), lenb = strlen(y);
     int diffe = abs(lena - lenb);
@@ -32,61 +34,52 @@ void post(char x[501], char y[501], char tempo[501]) {
     }
     tempo[lena] = '\0';
 }
-
+//função soma entre strings a e b
 void soma(char a[501], char b[501]) {
     char temp[502], soma[1002];
     int lena = strlen(a), lenb = strlen(b);
+    //caso a string a seja maior que a string b
     if (lena > lenb) {
-        int diff = lena - lenb;
-        for (int i = 0; i < diff; i++) {
-            temp[i] = '0';
-        }
-        for (int i = diff; i < lena; i++) {
-            temp[i] = b[i - diff];
-        }
-        temp[lena] = '\0';
+         post(a, b, temp);
         int carry = 0;
-        soma[lena] = '\0';
+        //adiciona o caracter \0 no final da string 
+        soma[lena + 1] = '\0';
+        //realiza a soma entre a maior string e a string temp de mesmo tamanho
         for (int i = lena - 1; i >= 0; i--) {
             int sum = chartoint(temp[i]) + chartoint(a[i]) + carry;
             carry = sum / 10;
-            soma[i+2] = soma[i + 1];
             soma[i + 1] = intochar(sum % 10);
         }
         soma[0] = intochar(carry);
         
     } else if (lenb > lena) {
-        int diff = lenb - lena;
-        for (int i = 0; i < diff; i++) {
-            temp[i] = '0';
-        }
-        for (int i = diff; i < lenb; i++) {
-            temp[i] = a[i - diff];
-        }
-        temp[lenb] = '\0';
+        post(b, a, temp);
         int carry = 0;
-        soma[lenb] = '0';
+        //colocando o digito \0 no final da string resultado
+        soma[lenb + 1] = '\0';
         for (int i = lenb - 1; i >= 0; i--) {
             int sum = chartoint(temp[i]) + chartoint(b[i]) + carry;
             carry = sum / 10;
-            soma[i+2] = soma[i + 1];
+
             soma[i + 1] = intochar(sum % 10);
         }
         soma[0] = intochar(carry);
     } else {
         int carry = 0;
-        soma[lenb] = '\0';
+        //colocando o digito \0 no final da string resultado
+        soma[lenb + 1] = '\0';
         for (int i = lena - 1; i >= 0; i--) {
             int sum = chartoint(a[i]) + chartoint(b[i]) + carry;
             carry = sum / 10;
-            soma[i+2] = soma[i + 1];
             soma[i + 1] = intochar(sum % 10);
         }
         soma[0] = intochar(carry);
     }
+    //Checando se a string é composta somente de zeros.
     if (checkzer(soma) == 0) {
         printf("0");
     } else {
+         //pulando os zeros à esquerda na impressão final.
         int start = 0;
         while (soma[start] == '0' && start < strlen(soma)) {
             start++;
@@ -103,11 +96,9 @@ void soma(char a[501], char b[501]) {
 void subr(char a[501], char b[501]) {
     int lena = strlen(a), lenb = strlen(b);
     char temp[1002], sub[1002];
-    sub[1002] = '\0';
     int resulnegativo = 0;
     int carry = 0;
-    
-
+    // Definindo se o resultado vai ser negativo ou positivo
     if (lena > lenb) {
         resulnegativo = 0;
     } else if (lenb > lena) {
@@ -123,8 +114,10 @@ void subr(char a[501], char b[501]) {
             }
         }
     }
+    // Começando a subtração. Separando em três casos variáveis caso o tamanho das string sejam diferentes
     if (lena > lenb) {
         post(a, b, temp);
+        //colocando o digito \0 no final da string resultado
         sub[lena] = '\0';
         for (int i = lena - 1; i >= 0; i--) {
             int x = chartoint(a[i]);
@@ -141,6 +134,7 @@ void subr(char a[501], char b[501]) {
         }
     } else if (lenb > lena) {
         post(b, a, temp);
+        //colocando o digito \0 no final da string resultado
         sub[lenb] = '\0';
         for (int i = lenb - 1; i >= 0; i--) {
             int x = chartoint(b[i]);
@@ -156,6 +150,7 @@ void subr(char a[501], char b[501]) {
             sub[i] = intochar(diff);
         }
     } else {
+        //colocando o digito \0 no final da string resultado
         sub[lena] = '\0';
         if (resulnegativo == 1) {
             for (int i = lena - 1; i >= 0; i--) {
@@ -187,22 +182,15 @@ void subr(char a[501], char b[501]) {
             }
         }
     }
+    //Checando se a string é composta somente de zeros
     if (checkzer(sub) == 0) {
         printf("0");
     } else{
-    /*else if (um == 0 && dois != 0) {
-        printf("-");
-        for (int i = 0; i < lenb; i++) {
-            printf("%c", b[i]);
-        }
-    } else if (atoi(b) == 0) {
-        for (int i = 0; i < lena; i++) {
-            printf("%c", a[i]);
-        }
-    } else { */ 
+        //Imprimindo o sinal caso o resultado seja negativo
         if (resulnegativo == 1) {
             printf("-");
         }
+        //pulando os zeros à esquerda na impressão final
         int start = 0;
         if (strlen(sub) > 1) {
             while (sub[start] == '0' && start < strlen(sub)) {
@@ -225,9 +213,11 @@ void mult(char a[501], char b[501]) {
     int lena = strlen(a), lenb = strlen(b);
     char resultado[1002];
     resultado[lena + lenb] = '\0';
+    //preenchendo o resultado com 0's antes dos produtos
     for (int i = 0; i < lena + lenb; i++) {
         resultado[i] = '0';
     }
+    //colocando o digito \0 no final da string resultado
     resultado[lena + lenb] = '\0';
     //Começando a multiplicação
     for (int i = lenb - 1; i >= 0; i--) {
@@ -239,6 +229,7 @@ void mult(char a[501], char b[501]) {
         }
         resultado[i] = intochar(carry);
     }
+    //Checando se a string é composta somente de zeros e pulando os digitos à esquerda.
     int h = checkzer(resultado);
     int start = 0;
     while (resultado[start] == '0' && start < strlen(resultado)) {
@@ -261,6 +252,7 @@ int main() {
     char b[501];
     int n, o;
     scanf("%d", &n);
+    //Impressão final em loop que se repete n vezez.
     for (int i = 0; i < n; i++) {
         scanf("%s %s %d", a, b, &o);
         if (o == 1) {
